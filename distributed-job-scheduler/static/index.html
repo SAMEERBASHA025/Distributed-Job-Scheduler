@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Distributed Job Scheduler</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="animated-bg" aria-hidden="true"></div>
+  <canvas id="aiCanvas" class="ai-canvas" aria-hidden="true"></canvas>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">DS</div>
+      <div>
+        <h1>Distributed Job Scheduler</h1>
+        <p id="projectLabel">Queue operations dashboard</p>
+      </div>
+    </div>
+    <form id="loginForm" class="login auth-card">
+      <select id="authMode" aria-label="Authentication mode">
+        <option value="signin">Sign in</option>
+        <option value="signup">Sign up</option>
+      </select>
+      <input id="email" type="email" value="demo@example.com" aria-label="Email" placeholder="Email">
+      <input id="password" type="password" value="demo-password" aria-label="Password" placeholder="Password">
+      <input id="displayName" class="signup-only hidden" value="New User" aria-label="Display name" placeholder="Display name">
+      <input id="organizationName" class="signup-only hidden" value="My Organization" aria-label="Organization name" placeholder="Organization">
+      <button id="authSubmit" type="submit">Sign in</button>
+    </form>
+  </header>
+
+  <main class="layout">
+    <div id="notice" class="notice hidden"></div>
+
+    <section class="overview">
+      <div class="overview-copy">
+        <span class="eyebrow">Live queue control</span>
+        <h2>Operate background jobs with clear worker visibility.</h2>
+        <p>Track queue pressure, worker status, retries, and job history from one focused dashboard.</p>
+      </div>
+      <div class="overview-actions">
+        <button id="refreshBtn" class="secondary" type="button">Refresh</button>
+      </div>
+    </section>
+
+    <section class="band health">
+      <div class="metric metric-queued">
+        <span class="label">Queued</span>
+        <strong id="queuedCount">0</strong>
+      </div>
+      <div class="metric metric-running">
+        <span class="label">Running</span>
+        <strong id="runningCount">0</strong>
+      </div>
+      <div class="metric metric-completed">
+        <span class="label">Completed</span>
+        <strong id="completedCount">0</strong>
+      </div>
+      <div class="metric metric-dead">
+        <span class="label">Dead Letter</span>
+        <strong id="deadCount">0</strong>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Queues</h2>
+          <span class="section-meta">Priority and concurrency</span>
+        </div>
+        <div id="queues" class="list"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Create Job</h2>
+          <span class="section-meta">Immediate or scheduled</span>
+        </div>
+        <form id="jobForm" class="form-grid">
+          <label>Queue <select id="queueSelect"></select></label>
+          <label>Type <input id="jobType" value="send_email"></label>
+          <label>Priority <input id="priority" type="number" value="100"></label>
+          <label>Schedule At <input id="scheduledAt" placeholder="Leave blank, or use 2026-07-04T12:30:00+05:30"></label>
+          <label class="wide">Payload JSON <textarea id="payload">{"to":"customer@example.com","duration_seconds":0.5}</textarea></label>
+          <button type="submit">Create Job</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Jobs</h2>
+          <select id="statusFilter">
+            <option value="">All</option>
+            <option value="queued">Queued</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="running">Running</option>
+            <option value="completed">Completed</option>
+            <option value="dead_letter">Dead Letter</option>
+          </select>
+        </div>
+        <div id="jobs" class="table"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Workers</h2>
+        <div id="workers" class="list"></div>
+        <h2 class="logs-title">Job Logs</h2>
+        <div id="logs" class="logs"></div>
+      </div>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
